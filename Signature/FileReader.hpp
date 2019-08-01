@@ -10,8 +10,6 @@ namespace Signature
 	class FileReader final
 	{
 	public:
-		static constexpr uint64_t DefaultBlockSize = 1048576; // 1 Mb
-
 		FileReader() = default;
 		FileReader( const std::filesystem::path& filePath );
 		~FileReader();

@@ -2,7 +2,7 @@
 
 namespace Signature
 {
-	MainWorker::MainWorker( const std::vector<std::string>& args )
+	MainWorker::MainWorker( const std::filesystem::path& inFilePath, const std::filesystem::path& outFilePath, size_t blockSize )
 	{
 	}
 
