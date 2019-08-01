@@ -16,6 +16,9 @@
     <Filter Include="Header Files\security">
       <UniqueIdentifier>{91d2b51f-b537-4989-bebd-fffc6fb7cd3b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\concurency">
+      <UniqueIdentifier>{62694ff1-cadc-45e4-b278-ad6b2dc985df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -31,6 +34,12 @@
     </ClInclude>
     <ClInclude Include="CRC32.hpp">
       <Filter>Header Files\security</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.hpp">
+      <Filter>Header Files\concurency</Filter>
+    </ClInclude>
+    <ClInclude Include="Semaphore.hpp">
+      <Filter>Header Files\concurency</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
