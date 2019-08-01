@@ -10,7 +10,7 @@ namespace Signature
 	class FileWriter final
 	{
 	public:
-		FileWriter() noexcept = default;
+		FileWriter() = default;
 		FileWriter( const std::filesystem::path& filePath ); 
 		~FileWriter();
 
