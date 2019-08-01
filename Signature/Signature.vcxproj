@@ -153,14 +153,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FileReader.cpp" />
+    <ClCompile Include="FileWriter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Signature.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CRC32.hpp" />
+    <ClInclude Include="FileReader.hpp" />
+    <ClInclude Include="FileWriter.hpp" />
     <ClInclude Include="Queue.hpp" />
     <ClInclude Include="Semaphore.hpp" />
     <ClInclude Include="Signature.hpp" />
+    <ClInclude Include="types.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
