@@ -157,6 +157,7 @@
     <ClCompile Include="Signature.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CRC32.hpp" />
     <ClInclude Include="Signature.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
