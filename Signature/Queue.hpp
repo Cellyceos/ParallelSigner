@@ -3,6 +3,7 @@
 #include "Semaphore.hpp"
 
 #include <atomic>
+#include <thread>
 #include <vector>
 
 
@@ -43,6 +44,7 @@ namespace Signature
 			 * @param element - An object of type T
 			*/
 			void push( const T& element );
+            void push( T&& element );
 
 			/**
 			 * Pops and element off the front of the queue - this is thread-safe and there can
@@ -102,13 +104,19 @@ namespace Signature
 		/*
 		 * Push an element onto the queue
 		*/
+        template <class T>
+        void FastCircularQueue<T>::push( const T& element )
+        {
+            push( std::move( element ) );
+        }
+    
 		template <class T>
-		void FastCircularQueue<T>::push( const T& element )
+		void FastCircularQueue<T>::push( T&& element )
 		{ 
 			condition_.wait();
 
-			//Add the element;
-			buffer_[writeIdx_] = element;
+			//Moved element to queue;
+            buffer_[writeIdx_] = std::move( element );
 
 			//Increment the write index and wrap if necessary
 			writeIdx_ = ( writeIdx_ + 1 ) % bufferSize_;
@@ -146,7 +154,7 @@ namespace Signature
 					}
 
 					//Fetch the value from the buffer
-					result = buffer_[currentReadIdx];
+					result = std::move( buffer_[currentReadIdx] );
 
 					//Decrement the count - this must be atomic and come before
 					//update count
