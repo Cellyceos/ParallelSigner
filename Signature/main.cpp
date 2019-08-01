@@ -3,12 +3,13 @@
 #include <iostream>
 
 namespace {
-	static constexpr uint64_t DefaultBlockSize = 1048576; // 1 Mb
+	static constexpr uint64_t inMegabytes = 1048576;
+	static constexpr uint64_t DefaultBlockSize = inMegabytes; // 1 Mb
 }
 
 int main( int argc, char* argv[] )
 {
-	if ( argc < 3 || argc > 5 || argc == 4 )
+	if ( argc < 3 || argc == 4 || argc > 5 )
 	{
 		std::cout << "Usage: <app-name> <input-file-path> <output-file-path> [-bs <block size, 1MB by default>]" << std::endl
 		<< "\t- enter block size as a decimal number of bytes, 1024B min, 64MB max" << std::endl;
@@ -29,7 +30,7 @@ int main( int argc, char* argv[] )
 			return 1;
 		}
 		
-		if ( blockSize > 64 * 1024 * 1024 || blockSize < 1024 )
+		if ( blockSize > 64 * inMegabytes || blockSize < 1024 )
 		{
 			std::cout << "Error: Wrong block size, launch app with no arguments for help" << std::endl;
 
