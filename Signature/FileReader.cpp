@@ -23,7 +23,11 @@ namespace Signature
 		assert( stream_.is_open() );
 		assert( buffer.size() );
 
-		stream_.read( reinterpret_cast<char*>( buffer.data() ), buffer.size() );
+		size_t readSize = buffer.size();
+		if ( readSize > fileSize_ - stream_.tellg() )
+			readSize = fileSize_ - stream_.tellg();
+
+		stream_.read( reinterpret_cast<char*>( buffer.data() ), readSize );
 	}
 
 	FileReader::~FileReader()
