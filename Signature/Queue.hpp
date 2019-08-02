@@ -1,11 +1,9 @@
 #pragma once
 
-#include "Semaphore.hpp"
-
 #include <atomic>
 #include <thread>
 #include <vector>
-
+#include <cassert>
 
 namespace Signature
 {
@@ -43,14 +41,13 @@ namespace Signature
 			 * this.
 			 * @param element - An object of type T
 			*/
-			void push( const T& element );
-            void push( T&& element );
+			bool push( T&& element );
 
 			/**
 			 * Pops and element off the front of the queue - this is thread-safe and there can
 			 * be multiple readers.
 			*/
-			bool pop( T& result );
+			T&& pop();
 
 			/**
 			 * Reports if there are any elements currently in the queue - ephemeral if
@@ -70,15 +67,14 @@ namespace Signature
 			FastCircularQueue& operator=( FastCircularQueue& ) = delete;
 
 			static constexpr size_t readIdx_Lock = -1;
+			static constexpr size_t writeIdx_Lock = -1;
 			const size_t bufferSize_;
 
-			size_t writeIdx_;
-
+			std::atomic_size_t writeIdx_;
 			std::atomic_size_t readIdx_;
 			std::atomic_size_t count_;
 
 			std::vector<T> buffer_;
-			Semaphore condition_;
 		};
 
 		/*
@@ -88,7 +84,7 @@ namespace Signature
 		FastCircularQueue<T>::FastCircularQueue( size_t size ) :
 			bufferSize_( size ), writeIdx_( 0 ),
 			readIdx_( 0 ), count_( 0 ),
-			buffer_( size ), condition_( size )
+			buffer_( size )
 		{
 		}
 
@@ -104,32 +100,48 @@ namespace Signature
 		/*
 		 * Push an element onto the queue
 		*/
-        template <class T>
-        void FastCircularQueue<T>::push( const T& element )
-        {
-            push( std::move( element ) );
-        }
-    
 		template <class T>
-		void FastCircularQueue<T>::push( T&& element )
-		{ 
-			condition_.wait();
+		bool FastCircularQueue<T>::push( T&& element )
+		{
+			assert( count_ < bufferSize_ );
 
-			//Moved element to queue;
-            buffer_[writeIdx_] = std::move( element );
+			while ( true )
+			{
+				//Load the current read index
+				size_t currentWriteIdx = writeIdx_;
 
-			//Increment the write index and wrap if necessary
-			writeIdx_ = ( writeIdx_ + 1 ) % bufferSize_;
+				//If the current read index is not held by another thread - lock it.
+				//This starts a critical section
+				if ( ( currentWriteIdx != writeIdx_Lock ) &&
+					 writeIdx_.compare_exchange_weak( currentWriteIdx,
+													  writeIdx_Lock,
+													  std::memory_order_release,
+													  std::memory_order_relaxed ) )
+				{
+					//Moved element to queue;
+					buffer_[currentWriteIdx] = std::move( element );
 
-			//Update count
-			++count_;
+					//Increment the write index and wrap if necessary
+					writeIdx_ = ( currentWriteIdx + 1 ) % bufferSize_;
+
+					//Update count
+					++count_;
+					return true;
+				}
+				else
+				{
+					std::this_thread::yield(); //Yield to the next thread
+				}
+			}
+
+			return false;
 		}
 
 		/*
 		 * Pop and element off the queue
 		*/
 		template <class T>
-		bool FastCircularQueue<T>::pop( T& result )
+		T&& FastCircularQueue<T>::pop()
 		{
 			while ( true )
 			{
@@ -153,25 +165,22 @@ namespace Signature
 						continue;
 					}
 
-					//Fetch the value from the buffer
-					result = std::move( buffer_[currentReadIdx] );
-
 					//Decrement the count - this must be atomic and come before
-					//update count
 					--count_;
-					condition_.notify();
 
 					//Calculate a new read index - does not have to be atomic
 					readIdx_ = ( currentReadIdx + 1 ) % bufferSize_;
-					return true;
+
+					//Fetch the value from the buffer
+					return std::move( buffer_[currentReadIdx] );
 				}
 				else
 				{
 					std::this_thread::yield(); //Yield to the next thread
-					if ( isEmpty() )
-						return false; //If the queue is empty, break out.
 				}
 			}
+
+			return std::move( T() );
 		}
 
 		/*
