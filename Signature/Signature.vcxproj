@@ -163,7 +163,6 @@
     <ClInclude Include="FileReader.hpp" />
     <ClInclude Include="FileWriter.hpp" />
     <ClInclude Include="Queue.hpp" />
-    <ClInclude Include="Semaphore.hpp" />
     <ClInclude Include="Signature.hpp" />
     <ClInclude Include="types.hpp" />
   </ItemGroup>
