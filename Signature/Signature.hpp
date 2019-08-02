@@ -13,5 +13,10 @@ namespace Signature
 		int execute();
 
 	private:
+        const std::filesystem::path inFilePath_;
+        const std::filesystem::path outFilePath_;
+        const size_t blockSize_;
+        
+        
 	};
 } // namespace Signature
