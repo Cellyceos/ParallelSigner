@@ -124,7 +124,7 @@ namespace Signature
 					while ( !jobPoolNotEmpty_.wait_for( lock, threadTimeout, [this]() { return !jobDataPool_->isEmpty() || prepareToExit_.load( std::memory_order_relaxed ) || somethingGoesWrong_.load( std::memory_order_relaxed ); } ) )
 						continue;
 
-					if ( jobDataPool_->isEmpty() && prepareToExit_.load( std::memory_order_relaxed ) || somethingGoesWrong_.load( std::memory_order_relaxed ) )
+                    if ( (jobDataPool_->isEmpty() && prepareToExit_.load( std::memory_order_relaxed )) || somethingGoesWrong_.load( std::memory_order_relaxed ) )
 						return;
 				}
 
@@ -168,7 +168,7 @@ namespace Signature
 					while ( !writerPoolNotEmpty_.wait_for( lock, std::chrono::milliseconds( 100 ), [this]() { return !writerPool_->isEmpty() || prepareToExit_.load( std::memory_order_relaxed ) || somethingGoesWrong_.load( std::memory_order_relaxed ); } ) )
 						continue;
 
-					if ( writerPool_->isEmpty() && prepareToExit_.load( std::memory_order_relaxed ) || somethingGoesWrong_.load( std::memory_order_relaxed ) )
+                    if ( (writerPool_->isEmpty() && prepareToExit_.load( std::memory_order_relaxed )) || somethingGoesWrong_.load( std::memory_order_relaxed ) )
 						return;
 				}
 
