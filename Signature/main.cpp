@@ -50,8 +50,12 @@ int main( int argc, char* argv[] )
 
 	try
 	{
+		auto start = std::chrono::high_resolution_clock::now();
 		Signature::MainWorker worker( argv[1], argv[2], blockSize );
 		exitCode = worker.execute();
+		auto stop = std::chrono::high_resolution_clock::now();
+
+		std::cout << "Done, time: " << std::chrono::duration_cast<std::chrono::seconds>( stop - start ).count() << " sec" << std::endl;
 	}
 	catch ( const std::exception& e )
 	{
