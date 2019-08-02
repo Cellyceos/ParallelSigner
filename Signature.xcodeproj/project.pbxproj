@@ -32,7 +32,6 @@
 		CDE6DA6E22F36BA8008E2F9D /* types.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = types.hpp; sourceTree = "<group>"; };
 		CDE6DA6F22F36BA8008E2F9D /* FileReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileReader.cpp; sourceTree = "<group>"; };
 		CDE6DA7122F36BA8008E2F9D /* FileWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileWriter.cpp; sourceTree = "<group>"; };
-		CDE6DA7722F36CB7008E2F9D /* Semaphore.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Semaphore.hpp; sourceTree = "<group>"; };
 		CDE6DA7822F36CB7008E2F9D /* Queue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Queue.hpp; sourceTree = "<group>"; };
 		CDEBE50C22F1C3E400AFC907 /* Signature */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Signature; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDEED3B322F1C62500C7DB2E /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; usesTabs = 1; };
@@ -74,7 +73,6 @@
 			isa = PBXGroup;
 			children = (
 				CDE6DA7822F36CB7008E2F9D /* Queue.hpp */,
-				CDE6DA7722F36CB7008E2F9D /* Semaphore.hpp */,
 			);
 			name = concurency;
 			sourceTree = "<group>";
