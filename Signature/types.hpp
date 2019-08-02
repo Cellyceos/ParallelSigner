@@ -9,14 +9,17 @@ namespace Signature
 
 	struct chunk_data_t
 	{
-		size_t blockIndex;
+		size_t blockIndex = 0;
 		buffer_t rawData;
+
+		chunk_data_t( size_t reservedSize ) :
+			rawData( reservedSize ) {}
 	};
 
 	struct result_data_t
 	{
-		size_t blockIndex;
-		uint32_t hashSum;
+		size_t blockIndex = 0;
+		uint32_t hashSum = 0;
 	};
 
 	using chunk_data_ptr_t = std::unique_ptr<chunk_data_t>;
